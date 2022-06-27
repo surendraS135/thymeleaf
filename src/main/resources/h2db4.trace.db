@@ -1,0 +1,3 @@
+2022-06-23 15:40:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSON" not found (this database is empty); SQL statement:
+select personenti0_.id as id1_0_, personenti0_.age as age2_0_, personenti0_.name as name3_0_ from person personenti0_ [42104-212]
