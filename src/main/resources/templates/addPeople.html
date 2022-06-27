@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<container-fluid>
+
+</span>
+
+<div class="text-bg-secondary p-4">
+
+</div>
+<div>
+<form action="#" th:action="@{/addPeople}" th:object="${people}"
+		method="post">
+		<table>
+			<tr>
+				<td><label th:text="Name" /></td>
+				<td><input type="text" th:field="*{name}" /></td>
+			</tr>
+			<tr>
+				<td><label th:text="Age" /></td>
+				<td><input type="text" th:field="*{age}" /></td>
+			</tr>
+			<tr>
+				<td><label th:text="Hobby" /></td>
+				<td><select th:field="*{hobby}">
+						<option th:value="'Dance'" th:text="Dance"></option>
+						<option th:value="'Sing'" th:text="Sing"></option>
+						<option th:value="'Love'" th:text="Love"></option>
+						<option th:value="'Nothing'" th:text="Nothing"></option>
+						<option th:value="'Something'" th:text="Something"></option>
+				</select></td>
+			</tr>
+			<tr>
+				<td><label th:text="Profession" /></td>
+				<td><select th:field="*{profession}">
+						<option th:value="'Dacoit'" th:text="Dacoit"></option>
+						<option th:value="'Actor'" th:text="Actor"></option>
+						<option th:value="'IT'" th:text="IT"></option>
+						<option th:value="'Duty'" th:text="Duty"></option>
+						<option th:value="'Lazy'" th:text="Lazy"></option>
+				</select></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit" /></td>
+			</tr>
+		</table>
+	</form>
+</span>
+</div>
+</container-fluid>
+</body>
+</html>
