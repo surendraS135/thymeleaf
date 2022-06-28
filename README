@@ -1,0 +1,6 @@
+Home page :
+http://localhost:8086/ViewPeople
+
+User/Password : user/user
+
+App uses h2 database and thymeleaf for UI.
