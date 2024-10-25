@@ -16,8 +16,6 @@ steps:
 
   - name: create-docker-image
     image: docker:latest
-    environment:
-      DOCKER_HOST: tcp://docker:2375  # Use the TCP socket to connect to the DinD service
     services:
       - docker
     commands:
@@ -38,8 +36,8 @@ steps:
 
   - name: deploy-app
     image: docker:latest
-    environment:
-      DOCKER_HOST: tcp://docker:2375  # Use the TCP socket to connect to the DinD service
+    services:
+      - docker
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
