@@ -15,7 +15,9 @@ steps:
       - mvn clean package -DskipTests
 
   - name: create-docker-image
-    image: docker
+    image: docker:latest
+    services:
+      - docker:dind  # Start the Docker daemon
     commands:
       - echo "FROM openjdk:11-jre-slim" > Dockerfile
       - echo "COPY target/*.jar app.jar" >> Dockerfile
@@ -33,10 +35,12 @@ steps:
         - 1.0
 
   - name: deploy-app
-    image: docker:dind
-    settings:
-      privileged: true  # Required for running Docker in Docker
+    image: docker
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
-# Remove the volumes section to avoid the mount issue
+services:
+  - name: docker
+    image: docker:dind
+    settings:
+      privileged: true  # Required for running Docker in Docker
