@@ -3,18 +3,18 @@ type: docker
 name: default
 
 steps:
-  - name: clone
+  - name: clone-repo
     image: alpine/git
     commands:
       - git clone https://github.com/NarenPrakash/thymeleafExample.git
       - cp -r thymeleafExample/* .
 
-  - name: build
+  - name: build-java
     image: maven:3.8.6-openjdk-11
     commands:
       - mvn clean package -DskipTests
 
-  - name: build-docker-image
+  - name: create-docker-image
     image: docker
     commands:
       - echo "FROM openjdk:11-jre-slim" > Dockerfile
@@ -22,7 +22,7 @@ steps:
       - echo "ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]" >> Dockerfile
       - docker build -t sowjanya135/drone-mvn:1.0 .
 
-  - name: publish
+  - name: publish-docker-image
     image: plugins/docker
     settings:
       username: sowjanya135
@@ -32,7 +32,7 @@ steps:
       tags:
         - 1.0
 
-  - name: deploy
+  - name: deploy-app
     image: docker:dind
     settings:
       privileged: true  # Required for running Docker in Docker
