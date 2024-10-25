@@ -1,6 +1,7 @@
 kind: pipeline
 type: docker
 name: default
+trusted: true
 
 steps:
   - name: clone-repo
@@ -18,11 +19,11 @@ steps:
     image: docker:latest
     volumes:
       - name: docker-sock
-        path: /var/run/docker.sock  # Mount the Docker socket
+        path: /var/run/docker.sock
     commands:
       - echo "FROM openjdk:11-jre-slim" > Dockerfile
       - echo "COPY target/*.jar app.jar" >> Dockerfile
-      - echo "ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]" >> Dockerfile
+      - echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
       - docker build -t sowjanya135/drone-mvn:1.0 .
 
   - name: publish-docker-image
@@ -30,7 +31,7 @@ steps:
     settings:
       username: sowjanya135
       password:
-        from_secret: docker_password  # Store your Docker password in Drone secrets
+        from_secret: docker_password  # Ensure this secret is set in Drone
       repo: sowjanya135/drone-mvn
       tags:
         - 1.0
@@ -39,11 +40,11 @@ steps:
     image: docker:latest
     volumes:
       - name: docker-sock
-        path: /var/run/docker.sock  # Mount the Docker socket
+        path: /var/run/docker.sock
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
 volumes:
   - name: docker-sock
     host:
-      path: /var/run/docker.sock  # Mount the Docker socket from the host
+      path: /var/run/docker.sock
