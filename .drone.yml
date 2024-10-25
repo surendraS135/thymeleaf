@@ -27,6 +27,7 @@ steps:
 
   - name: deploy-app
     image: docker:latest
+    privileged: true 
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest
 
