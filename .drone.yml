@@ -17,6 +17,7 @@ steps:
 
   - name: create-docker-image
     image: docker:latest
+    privileged: true  # Add this line
     volumes:
       - name: docker-sock
         path: /var/run/docker.sock
@@ -38,6 +39,7 @@ steps:
 
   - name: deploy-app
     image: docker:latest
+    privileged: true  # Add this line
     volumes:
       - name: docker-sock
         path: /var/run/docker.sock
