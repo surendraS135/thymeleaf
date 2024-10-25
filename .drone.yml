@@ -19,17 +19,18 @@ steps:
     settings:
       username: sowjanya135  # Your Docker Hub username
       password:
-        from_secret: docker_password  # Ensure this secret is set in Drone
+        from_secret: docker_password  # Secret for Docker Hub password
       repo: sowjanya135/drone-mvn  # Your Docker Hub repository name
       tags:
-        - latest  # You can specify multiple tags if needed
-      dockerfile: Dockerfile  # Specify the Dockerfile path if not in the root directory
+        - latest
 
   - name: deploy-app
-    image: docker:latest
-    privileged: true 
-    commands:
-      - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest
-
-volumes:
-  # No volume mounts since we're not using privileged mode.
+    image: plugins/docker
+    settings:
+      username: sowjanya135  # Your Docker Hub username (if needed)
+      password:
+        from_secret: docker_password  # Secret for Docker Hub password (if needed)
+      repo: sowjanya135/drone-mvn  # Your Docker Hub repository name
+      tags:
+        - latest
+      run: true  # This will run the container after pulling the image
