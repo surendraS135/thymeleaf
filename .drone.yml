@@ -39,7 +39,4 @@ steps:
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
-volumes:
-  - name: docker
-    host:
-      path: /var/run/docker.sock  # Required for Docker-in-Docker to work
+# Remove the volumes section to avoid the mount issue
