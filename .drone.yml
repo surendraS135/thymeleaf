@@ -1,7 +1,6 @@
 kind: pipeline
 type: docker
 name: default
-trusted: true
 
 steps:
   - name: clone-repo
@@ -17,14 +16,12 @@ steps:
 
   - name: create-docker-image
     image: docker:latest
-    privileged: true  # Add this line
-    volumes:
-      - name: docker-sock
-        path: /var/run/docker.sock
+    privileged: true  # Requires trusted repository
     commands:
       - echo "FROM openjdk:11-jre-slim" > Dockerfile
       - echo "COPY target/*.jar app.jar" >> Dockerfile
       - echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+      - ls target  # Verify that the JAR file exists
       - docker build -t sowjanya135/drone-mvn:1.0 .
 
   - name: publish-docker-image
@@ -39,10 +36,7 @@ steps:
 
   - name: deploy-app
     image: docker:latest
-    privileged: true  # Add this line
-    volumes:
-      - name: docker-sock
-        path: /var/run/docker.sock
+    privileged: true  # Requires trusted repository
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
