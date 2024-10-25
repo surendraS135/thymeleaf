@@ -16,8 +16,9 @@ steps:
 
   - name: create-docker-image
     image: docker:latest
-    services:
-      - docker
+    volumes:
+      - name: docker-sock
+        path: /var/run/docker.sock  # Mount the Docker socket
     commands:
       - echo "FROM openjdk:11-jre-slim" > Dockerfile
       - echo "COPY target/*.jar app.jar" >> Dockerfile
@@ -36,13 +37,13 @@ steps:
 
   - name: deploy-app
     image: docker:latest
-    services:
-      - docker
+    volumes:
+      - name: docker-sock
+        path: /var/run/docker.sock  # Mount the Docker socket
     commands:
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:1.0
 
-services:
-  - name: docker
-    image: docker:dind
-    settings:
-      privileged: true  # Required for running Docker in Docker
+volumes:
+  - name: docker-sock
+    host:
+      path: /var/run/docker.sock  # Mount the Docker socket from the host
