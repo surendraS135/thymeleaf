@@ -1,19 +1,30 @@
 kind: pipeline
-type: docker
 name: default
 
 steps:
 - name: deploy
-  image: docker:20.10.8  # Specify a specific Docker image version
-  services:
-  - docker:20.10.8  # Start Docker daemon service
+  image: docker:20.10.8  # Use Docker to deploy the container
   commands:
-  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1
+  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1  # Deploy your Docker image
+
+- name: test
+  image: docker:20.10.8  # Use Docker-in-Docker
   volumes:
-  - name: docker
-    path: /var/run/docker.sock
+  - name: dockersock
+    path: /var/run/docker.sock  # Docker socket
+  commands:
+  - sleep 5  # Allow Docker to start
+  - docker ps -a  # List Docker containers
+
+services:
+- name: docker
+  image: docker:20.10.8  # Docker service
+  privileged: true  # Necessary for DinD
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock  # Docker socket for the service
 
 volumes:
-- name: docker
+- name: dockersock
   host:
-    path: /var/run/docker.sock
+    path: /var/run/docker.sock  # Host's Docker socket
