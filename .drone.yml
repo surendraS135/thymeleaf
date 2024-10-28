@@ -1,18 +1,36 @@
 kind: pipeline
+type: docker
 name: default
 
 steps:
-  - name: deploy-app
-    image: docker:latest  # Use Docker to run the container
-    privileged: true  # Necessary for Docker commands if using Docker-in-Docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock  # Mount the Docker socket for access
-    commands:
-      - docker ps -a  # List all containers (optional, for debugging)
-      - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest  # Deploy your Docker image
+- name: build
+  image: maven:3.8.4-openjdk-11
+  commands:
+  - mvn clean package
+
+- name: publish
+  image: plugins/docker
+  settings:
+    username: sowjanya135
+    password: D0cker@135
+    repo: sowjanya135/drone-mvn
+    tags:
+    - 1.0
+  when:
+    event:
+      - push
+      - tag
+
+- name: deploy
+  image: docker:dind
+  privileged: true
+  commands:
+  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1.0
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
 
 volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock  # Correctly mount the Docker socket
+- name: docker
+  host:
+    path: /var/run/docker.sock
