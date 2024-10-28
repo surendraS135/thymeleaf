@@ -2,23 +2,16 @@ kind: pipeline
 name: default
 
 steps:
-  - name: deploy
-    image: docker:20.10.8  # Use Docker to deploy the container
+  - name: deploy-app
+    image: docker:latest  # Use Docker to run the container
+    privileged: true  # Necessary for Docker commands if using Docker-in-Docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock  # Mount the Docker socket for access
     commands:
-      - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1  # Deploy your Docker image
-
-  - name: test
-    image: docker:20.10.8  # Use Docker-in-Docker
-    commands:
-      - sleep 5  # Allow Docker to start
-      - docker ps -a  # List Docker containers
-
-services:
-  - name: docker
-    image: docker:20.10.8  # Docker service
-    # Remove privileged mode if not using a trusted repository
+      - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest  # Deploy your Docker image
 
 volumes:
   - name: dockersock
     host:
-      path: /var/run/docker.sock  # Host's Docker socket (if needed)
+      path: /var/run/docker.sock  # Host's Docker socket for access  # Mount the Docker socket for access (if necessary)
