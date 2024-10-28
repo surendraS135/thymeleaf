@@ -8,5 +8,7 @@ steps:
     settings:
       auto_cleanup: true 
     commands:
-      - sudo docker pull sowjanya135/drone-mvn:latest  # Pull the image
-      - sudo docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # Run the container
+      - dockerd &  # Start the Docker daemon in the background
+      - sleep 5  # Wait for the Docker daemon to start
+      - docker pull sowjanya135/drone-mvn:latest  # Pull the image
+      - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # Run the container
