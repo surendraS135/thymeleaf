@@ -9,6 +9,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock  # Mount the Docker socket for access
     commands:
+      - docker ps -a
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest  # Deploy your Docker image
 
 volumes:
