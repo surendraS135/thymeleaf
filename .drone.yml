@@ -24,13 +24,10 @@ steps:
       tags:
         - latest
 
-  - name: deploy-app
-    image: plugins/docker
-    settings:
-      username: sowjanya135  # Your Docker Hub username (if needed)
-      password:
-        from_secret: docker_password  # Secret for Docker Hub password (if needed)
-      repo: sowjanya135/drone-mvn  # Your Docker Hub repository name
-      tags:
-        - latest
-      run: true  # This will run the container after pulling the image
+ - name: deploy-app
+  image: docker:latest
+  settings:
+    auto_cleanup: true
+  commands:
+    - docker pull sowjanya135/drone-mvn:latest  # Pull the image
+    - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # This will run the container after pulling the image
