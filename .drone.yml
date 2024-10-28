@@ -21,7 +21,7 @@ steps:
   image: docker:dind
   privileged: true
   commands:
-  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1
+  - docker run -d -p 8080:8086 --name drone-app sowjanya135/drone-mvn:1
   volumes:
   - name: docker
     path: /var/run/docker.sock
