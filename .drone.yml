@@ -24,10 +24,10 @@ steps:
       tags:
         - latest
 
- - name: deploy-app
-  image: docker:latest
-  settings:
-    auto_cleanup: true
-  commands:
-    - docker pull sowjanya135/drone-mvn:latest  # Pull the image
-    - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # This will run the container after pulling the image
+  - name: deploy-app
+    image: docker
+    settings:
+      auto_cleanup: true
+    commands:
+      - docker pull sowjanya135/drone-mvn:latest  # Pull the image
+      - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # This will run the container after pulling the image
