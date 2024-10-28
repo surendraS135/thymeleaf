@@ -21,6 +21,11 @@ steps:
   image: docker:dind
   privileged: true
   commands:
+  - |
+    if [ "$(docker ps -q -f name=drone-app)" ]; then
+      docker stop drone-app
+      docker rm -f drone-app
+    fi
   - docker run -d -p 8080:8086 --name drone-app sowjanya135/drone-mvn:1
   volumes:
   - name: docker
