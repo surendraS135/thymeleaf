@@ -7,12 +7,12 @@ steps:
     privileged: true  # Necessary for Docker commands if using Docker-in-Docker
     volumes:
       - name: dockersock
-        path: /var/run/  # Mount the Docker socket for access
+        host:
+          path: /var/run/  # Mount the Docker socket for access
     commands:
       - docker ps -a
       - docker run -d -p 8080:8080 --name java-app sowjanya135/drone-mvn:latest  # Deploy your Docker image
 
 volumes:
   - name: dockersock
-    host:
-      path: /var/run/  # Host's Docker socket for access  # Mount the Docker socket for access (if necessary)
+    path: /var/run/  # Host's Docker socket for access  # Mount the Docker socket for access (if necessary)
