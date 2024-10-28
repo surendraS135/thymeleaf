@@ -16,16 +16,12 @@ steps:
     repo: sowjanya135/drone-mvn
     tags:
     - 1.0
-  when:
-    event:
-      - push
-      - tag
-
+    
 - name: deploy
   image: docker:dind
   privileged: true
   commands:
-  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1.0
+  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1
   volumes:
   - name: docker
     path: /var/run/docker.sock
