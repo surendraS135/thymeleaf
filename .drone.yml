@@ -3,12 +3,17 @@ type: docker
 name: default
 
 steps:
-  - name: deploy-app
-    image: docker:20.10.7-dind  # Use Docker-in-Docker
-    settings:
-      auto_cleanup: true 
-    commands:
-      - dockerd &  # Start the Docker daemon
-      - sleep 5    # Wait for the Docker daemon to fully start
-      - docker pull sowjanya135/drone-mvn:latest  # Pull the image
-      - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # Run the container
+- name: deploy
+  image: docker:20.10.8  # Specify a specific Docker image version
+  services:
+  - docker:20.10.8  # Start Docker daemon service
+  commands:
+  - docker run -d -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:1
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
