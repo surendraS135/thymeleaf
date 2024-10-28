@@ -33,5 +33,3 @@ steps:
       - dockerd &  # Start Docker daemon in the background
       - docker pull sowjanya135/drone-mvn:latest  # Pull the image
       - docker run -itd -p 8080:8086 --name drone-docker sowjanya135/drone-mvn:latest  # Run the container
-    when:
-      event: push
